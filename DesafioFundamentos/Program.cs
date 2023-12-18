@@ -1,4 +1,5 @@
-﻿using DesafioFundamentos.Models;
+﻿using System.Drawing;
+using DesafioFundamentos.Models;
 
 // Coloca o encoding para UTF8 para exibir acentuação
 Console.OutputEncoding = System.Text.Encoding.UTF8;
@@ -48,12 +49,16 @@ while (exibirMenu)
             break;
 
         default:
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("Opção inválida");
+            Console.ResetColor();
             break;
     }
 
     Console.WriteLine("Pressione uma tecla para continuar");
     Console.ReadLine();
 }
-
+Console.ForegroundColor = ConsoleColor.Yellow;
 Console.WriteLine("O programa se encerrou");
+ Console.ResetColor();
+
