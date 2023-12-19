@@ -18,7 +18,7 @@ namespace DesafioFundamentos.Models
          
         public void AdicionarVeiculo()
         {
-             string padraoPlaca = "^[A-Z]{3}[A-Z-0-9]{4}$";
+           
             
             Console.WriteLine("Digite a placa do veículo para estacionar:");
         
@@ -31,7 +31,7 @@ namespace DesafioFundamentos.Models
                  Console.ResetColor();
             }
             
-             else if(Regex.IsMatch(placasMaiuscula, padraoPlaca)){
+             else if(Validarplaca(placasMaiuscula)){
               veiculos.Add(placasMaiuscula);
               Console.ForegroundColor = ConsoleColor.Green;
               Console.WriteLine("Carro cadastrado com sucesso!");
@@ -92,6 +92,14 @@ namespace DesafioFundamentos.Models
                 Console.WriteLine("Não há veículos estacionados.");
                 Console.ResetColor();
             }
+        }
+
+        public bool Validarplaca(string placasMaiuscula){
+          
+          string padraoPlaca = "^[A-Z]{3}[A-Z-0-9]{4}$";
+          bool validar = Regex.IsMatch(placasMaiuscula, padraoPlaca);
+
+         return validar;
         }
     }
 }
