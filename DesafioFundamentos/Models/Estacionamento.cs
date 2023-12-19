@@ -9,6 +9,8 @@ namespace DesafioFundamentos.Models
         private decimal precoInicial = 0;
         private decimal precoPorHora = 0;
         private List<string> veiculos = new List<string>();
+        private int quantidadevagas = 2;
+      
 
         public Estacionamento(decimal precoInicial, decimal precoPorHora)
         {
@@ -32,11 +34,25 @@ namespace DesafioFundamentos.Models
             }
             
              else if(Validarplaca(placasMaiuscula)){
-              veiculos.Add(placasMaiuscula);
+
+                if(quantidadevagas == 0){
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Não há mais vagas disponiveis no estacionamento.");
+                    Console.ResetColor();
+                }
+
+                else{
+                veiculos.Add(placasMaiuscula);
+                quantidadevagas--;
+             
               Console.ForegroundColor = ConsoleColor.Green;
               Console.WriteLine("Carro cadastrado com sucesso!");
               Console.ResetColor();
+
+            Console.WriteLine($"Há {quantidadevagas} vagas disponiveis no estacionamento.");
+                }
             }
+
             else{
                  Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Placa não corresponde ao padrão do mercosul.");
@@ -61,9 +77,14 @@ namespace DesafioFundamentos.Models
                 decimal valorTotal = precoInicial+(precoPorHora*horas); 
 
                 veiculos.Remove(placasMaiuscula);
+                
+                 quantidadevagas++;
+
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine($"O veículo {placasMaiuscula} foi removido e o preço total foi de: R$ {valorTotal}");
                 Console.ResetColor();
+
+                 Console.WriteLine($"Há {quantidadevagas} vagas disponiveis no estacionamento.");
             }
             else
             {
