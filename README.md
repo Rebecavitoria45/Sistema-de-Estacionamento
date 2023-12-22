@@ -23,7 +23,8 @@ O desafio foi criar um sistema para a gestão de um estacionamento, Apartir de u
 
 ##  Melhorias
 ° Fiz validações para as placas dos carros usando expressões regulares. <br>
-° Utilizei cores em alguns textos(confirmação, remoção) do console para a melhor percepção do usuário.
+° Utilizei cores em alguns textos(confirmação, remoção) do console para a melhor percepção do usuário. <br>
+°  Quantidade de vagas que estão disponíveis no momento, se ultrapassar o usuário não consegue mais cadastrar nenhum veículo.
 
 
 
