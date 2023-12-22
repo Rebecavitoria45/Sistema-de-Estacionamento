@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Security;
 using System.Text.RegularExpressions;
 using Microsoft.Win32.SafeHandles;
@@ -10,6 +11,7 @@ namespace DesafioFundamentos.Models
         private decimal precoPorHora = 0;
         private List<string> veiculos = new List<string>();
         private int quantidadevagas = 2;
+        
       
 
         public Estacionamento(decimal precoInicial, decimal precoPorHora)
@@ -24,16 +26,17 @@ namespace DesafioFundamentos.Models
             
             Console.WriteLine("Digite a placa do veículo para estacionar:");
         
-            string placas = Console.ReadLine();
-            string placasMaiuscula = placas.ToUpper();
+            string placas = Console.ReadLine().ToUpper();
+           
 
-            if(veiculos.Contains(placasMaiuscula)){
+            if(veiculos.Contains(placas)){
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Placa já esta cadastrada no sistema.");
                  Console.ResetColor();
+                 AdicionarVeiculo();
             }
             
-             else if(Validarplaca(placasMaiuscula)){
+             else if(Validarplaca(placas)){
 
                 if(quantidadevagas == 0){
                     Console.ForegroundColor = ConsoleColor.Red;
@@ -42,7 +45,7 @@ namespace DesafioFundamentos.Models
                 }
 
                 else{
-                veiculos.Add(placasMaiuscula);
+                veiculos.Add(placas);
                 quantidadevagas--;
              
               Console.ForegroundColor = ConsoleColor.Green;
@@ -57,6 +60,9 @@ namespace DesafioFundamentos.Models
                  Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Placa não corresponde ao padrão do mercosul.");
                  Console.ResetColor();
+                  AdicionarVeiculo();
+              
+              
             }
            
         }
@@ -65,23 +71,25 @@ namespace DesafioFundamentos.Models
         {
             Console.WriteLine("Digite a placa do veículo para remover:");
 
-            string placas = Console.ReadLine();
-            string placasMaiuscula = placas.ToUpper();
+            string placas = Console.ReadLine().ToUpper();
+            
 
             // Verifica se o veículo existe
-            if (veiculos.Contains(placasMaiuscula))
+            if (veiculos.Contains(placas))
             {
                 Console.WriteLine("Digite a quantidade de horas que o veículo permaneceu estacionado:");
                 
                 int horas = int.Parse(Console.ReadLine());;
                 decimal valorTotal = precoInicial+(precoPorHora*horas); 
 
-                veiculos.Remove(placasMaiuscula);
+                veiculos.Remove(placas);
+               
                 
                  quantidadevagas++;
-
+             
+                
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine($"O veículo {placasMaiuscula} foi removido e o preço total foi de: R$ {valorTotal}");
+                Console.WriteLine($"O veículo {placas} foi removido e o preço total foi de: R$ {valorTotal}");
                 Console.ResetColor();
 
                  Console.WriteLine($"Há {quantidadevagas} vagas disponiveis no estacionamento.");
@@ -91,6 +99,7 @@ namespace DesafioFundamentos.Models
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Desculpe, esse veículo não está estacionado aqui. Confira se digitou a placa corretamente");
                 Console.ResetColor();
+                RemoverVeiculo();
             }
         }
 
@@ -115,10 +124,10 @@ namespace DesafioFundamentos.Models
             }
         }
 
-        public bool Validarplaca(string placasMaiuscula){
+        public bool Validarplaca(string placas){
           
           string padraoPlaca = "^[A-Z]{3}[A-Z-0-9]{4}$";
-          bool validar = Regex.IsMatch(placasMaiuscula, padraoPlaca);
+          bool validar = Regex.IsMatch(placas, padraoPlaca);
 
          return validar;
         }
