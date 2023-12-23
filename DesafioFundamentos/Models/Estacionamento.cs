@@ -1,105 +1,107 @@
 using System.Diagnostics;
+using System.Net.Http.Headers;
 using System.Security;
 using System.Text.RegularExpressions;
+using System.Text.Unicode;
 using Microsoft.Win32.SafeHandles;
 
 namespace DesafioFundamentos.Models
 {
     public class Estacionamento
     {
-        private decimal precoInicial = 0;
-        private decimal precoPorHora = 0;
+        private decimal TaxaEstacionamento = 0;
         private List<string> veiculos = new List<string>();
-        private int quantidadevagas = 2;
+        private int quantidadevagas = 3;
+          DateTime horaSaida;
+          DateTime horaEntrada;
+         TimeSpan tempoEstacionado;
         
-      
-
-        public Estacionamento(decimal precoInicial, decimal precoPorHora)
+        public Estacionamento(decimal TaxaEstacionamento)
         {
-            this.precoInicial = precoInicial;
-            this.precoPorHora = precoPorHora;
+            this.TaxaEstacionamento = TaxaEstacionamento;
         }
          
         public void AdicionarVeiculo()
         {
-           
-            
-            Console.WriteLine("Digite a placa do veículo para estacionar:");
-        
-            string placas = Console.ReadLine().ToUpper();
-           
+            //verifica se existe vaga para estacionar 
+           if(quantidadevagas == 0){
+            Console.ForegroundColor = ConsoleColor.Red;
+             Console.WriteLine("Não há mais vagas disponiveis no estacionamento.");
+             Console.ResetColor();
 
-            if(veiculos.Contains(placas)){
+           }
+           else
+         {
+            Console.WriteLine("Digite a placa do veículo para estacionar:");
+            string placa = Console.ReadLine().ToUpper();
+           
+            //verifica se a placa já existe no sistema
+            if(veiculos.Contains(placa)){ 
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Placa já esta cadastrada no sistema.");
                  Console.ResetColor();
                  AdicionarVeiculo();
             }
             
-             else if(Validarplaca(placas)){
+             //chama a função para validar a placa, se seguir o padrão ela é adicionada
+           else if(Validarplaca(placa))
+           {
+             veiculos.Add(placa);
+             horaEntrada = DateTime.Now;
+             quantidadevagas--;
+        
+             Console.ForegroundColor = ConsoleColor.Green;
+             Console.WriteLine("Carro cadastrado com sucesso!");
+             Console.ResetColor();
 
-                if(quantidadevagas == 0){
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Não há mais vagas disponiveis no estacionamento.");
-                    Console.ResetColor();
+             Console.WriteLine($"Há {quantidadevagas} vagas disponiveis no estacionamento.");
                 }
-
-                else{
-                veiculos.Add(placas);
-                quantidadevagas--;
-             
-              Console.ForegroundColor = ConsoleColor.Green;
-              Console.WriteLine("Carro cadastrado com sucesso!");
-              Console.ResetColor();
-
-            Console.WriteLine($"Há {quantidadevagas} vagas disponiveis no estacionamento.");
-                }
-            }
-
+            
+            //placa fora do padrão
             else{
                  Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Placa não corresponde ao padrão do mercosul.");
+                 Console.WriteLine("Placa não corresponde ao padrão do mercosul.");
                  Console.ResetColor();
-                  AdicionarVeiculo();
+                  AdicionarVeiculo(); //tente novamente
               
               
             }
-           
-        }
-
+            }
+           }
         public void RemoverVeiculo()
         {
             Console.WriteLine("Digite a placa do veículo para remover:");
-
-            string placas = Console.ReadLine().ToUpper();
+             string placa = Console.ReadLine().ToUpper();
             
 
             // Verifica se o veículo existe
-            if (veiculos.Contains(placas))
+            if (veiculos.Contains(placa))
             {
-                Console.WriteLine("Digite a quantidade de horas que o veículo permaneceu estacionado:");
-                
-                int horas = int.Parse(Console.ReadLine());;
-                decimal valorTotal = precoInicial+(precoPorHora*horas); 
-
-                veiculos.Remove(placas);
+                veiculos.Remove(placa);
+                horaSaida = DateTime.Now;
+                tempoEstacionado = horaSaida - horaEntrada;
                
-                
+               
+               
+               Console.WriteLine("--------Nota Fiscal---------"); 
+               Console.WriteLine("Veículo:             " +placa);
+               Console.WriteLine("Tempo estacionado:   " + tempoEstacionado.Minutes +" min");
+               Console.WriteLine("Valor total R$:      " + Calculopreco(tempoEstacionado) );
+                   Console.WriteLine("-----------------"); 
+                  
+                 Console.ForegroundColor = ConsoleColor.Green;
+                 Console.WriteLine("Veículo Removido com Sucesso");
+                 Console.ResetColor();
                  quantidadevagas++;
              
-                
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine($"O veículo {placas} foi removido e o preço total foi de: R$ {valorTotal}");
-                Console.ResetColor();
-
-                 Console.WriteLine($"Há {quantidadevagas} vagas disponiveis no estacionamento.");
-            }
+             Console.WriteLine($"Há {quantidadevagas} vagas disponiveis no estacionamento.\n");
+             }
             else
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Desculpe, esse veículo não está estacionado aqui. Confira se digitou a placa corretamente");
                 Console.ResetColor();
-                RemoverVeiculo();
+               
             }
         }
 
@@ -109,9 +111,10 @@ namespace DesafioFundamentos.Models
             if (veiculos.Any())
             {
                 Console.WriteLine("Os veículos estacionados são:");
-                
-                 Console.ForegroundColor = ConsoleColor.Yellow;
-                foreach(string veiculo in veiculos ){
+                Console.ForegroundColor = ConsoleColor.Yellow;
+               
+                foreach(string veiculo in veiculos )
+                {
                     Console.WriteLine(veiculo);
                 }
                 Console.ResetColor();
@@ -123,13 +126,25 @@ namespace DesafioFundamentos.Models
                 Console.ResetColor();
             }
         }
-
-        public bool Validarplaca(string placas){
+        //validação de placa usando expressões regulares
+       public bool Validarplaca(string placa){
           
           string padraoPlaca = "^[A-Z]{3}[A-Z-0-9]{4}$";
-          bool validar = Regex.IsMatch(placas, padraoPlaca);
-
+          bool validar = Regex.IsMatch(placa, padraoPlaca);
          return validar;
         }
-    }
+     
+     decimal Calculopreco(TimeSpan tempoEstacionado)
+      {
+     if(tempoEstacionado.Minutes <= 10)
+     {
+    return TaxaEstacionamento;
+     }
+    else
+     {
+      int precoHora = 5;
+      return Math.Round(TaxaEstacionamento + (tempoEstacionado.Minutes/60) * precoHora); 
+      }
+      }
+   }
 }
