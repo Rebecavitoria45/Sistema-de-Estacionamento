@@ -75,11 +75,11 @@ namespace DesafioFundamentos.Models
                 tempoEstacionado = horaSaida - horaEntrada;
                
                
-               
+               Console.Clear();
                Console.WriteLine("--------Nota Fiscal---------"); 
                Console.WriteLine("Veículo:             " +placa);
                Console.WriteLine("Tempo estacionado:   " + FormatarTempo(tempoEstacionado));
-               Console.WriteLine("Valor total R$:      " + Calculopreco(tempoEstacionado) );
+               Console.WriteLine("Valor total R$:      " + Calculopreco(tempoEstacionado));
                    Console.WriteLine("-----------------"); 
                   
                  Console.ForegroundColor = ConsoleColor.Green;
@@ -131,7 +131,7 @@ namespace DesafioFundamentos.Models
      }
        else{
        int precoHora = 5;
-       return Math.Round(TaxaEstacionamento + (tempoEstacionado.Minutes/60) * precoHora); 
+       return Math.Round(TaxaEstacionamento + (tempoEstacionado.Minutes/60) * precoHora, 2); 
       }
       }
       private string FormatarTempo (TimeSpan tempoEstacionado)
