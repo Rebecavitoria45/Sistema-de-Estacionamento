@@ -24,7 +24,8 @@ O desafio foi criar um sistema para a gestão de um estacionamento, Apartir de u
 ##  Melhorias
 ° Fiz validações para as placas dos carros usando expressões regulares. <br>
 ° Utilizei cores em alguns textos(confirmação, remoção) do console para a melhor percepção do usuário. <br>
-°  Quantidade de vagas que estão disponíveis no momento, se ultrapassar o usuário não consegue mais cadastrar nenhum veículo.
+° Quantidade de vagas que estão disponíveis no momento, se ultrapassar o usuário não consegue mais cadastrar nenhum veículo.<br>
+° Cálculo para o preço do estacionamento(10 min -> só paga a taxa do estacionamento, Tempo maior que 10 min -> paga 5 reais por hora).
 
 
 
