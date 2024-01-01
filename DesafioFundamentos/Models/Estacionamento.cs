@@ -12,23 +12,21 @@ namespace DesafioFundamentos.Models
         private decimal TaxaEstacionamento = 0;
         private List<string> veiculos = new List<string>();
         private int quantidadevagas = 3;
-          DateTime horaSaida;
-          DateTime horaEntrada;
-         TimeSpan tempoEstacionado;
+        private  DateTime horaSaida;
+        private  DateTime horaEntrada;
+        private TimeSpan tempoEstacionado;
         
         public Estacionamento(decimal TaxaEstacionamento)
         {
             this.TaxaEstacionamento = TaxaEstacionamento;
         }
-         
-        public void AdicionarVeiculo()
+         public void AdicionarVeiculo()
         {
             //verifica se existe vaga para estacionar 
            if(quantidadevagas == 0){
-            Console.ForegroundColor = ConsoleColor.Red;
+             Console.ForegroundColor = ConsoleColor.Red;
              Console.WriteLine("Não há mais vagas disponiveis no estacionamento.");
              Console.ResetColor();
-
            }
            else
          {
@@ -39,11 +37,10 @@ namespace DesafioFundamentos.Models
             if(veiculos.Contains(placa)){ 
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Placa já esta cadastrada no sistema.");
-                 Console.ResetColor();
-                 AdicionarVeiculo();
+                Console.ResetColor();
+                AdicionarVeiculo();
             }
-            
-             //chama a função para validar a placa, se seguir o padrão ela é adicionada
+           //chama a função para validar a placa e adiciona veiculo
            else if(Validarplaca(placa))
            {
              veiculos.Add(placa);
@@ -55,26 +52,22 @@ namespace DesafioFundamentos.Models
              Console.ResetColor();
 
              Console.WriteLine($"Há {quantidadevagas} vagas disponiveis no estacionamento.");
-                }
-            
+            }
             //placa fora do padrão
             else{
-                 Console.ForegroundColor = ConsoleColor.Red;
-                 Console.WriteLine("Placa não corresponde ao padrão do mercosul.");
-                 Console.ResetColor();
-                  AdicionarVeiculo(); //tente novamente
-              
-              
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Placa não corresponde ao padrão do mercosul.");
+                Console.ResetColor();
+                AdicionarVeiculo(); //tente novamente
+               }
             }
-            }
-           }
-        public void RemoverVeiculo()
+         }
+          public void RemoverVeiculo()
         {
             Console.WriteLine("Digite a placa do veículo para remover:");
-             string placa = Console.ReadLine().ToUpper();
+            string placa = Console.ReadLine().ToUpper();
             
-
-            // Verifica se o veículo existe
+        // Verifica se o veículo existe
             if (veiculos.Contains(placa))
             {
                 veiculos.Remove(placa);
@@ -85,7 +78,7 @@ namespace DesafioFundamentos.Models
                
                Console.WriteLine("--------Nota Fiscal---------"); 
                Console.WriteLine("Veículo:             " +placa);
-               Console.WriteLine("Tempo estacionado:   " + tempoEstacionado.Minutes +" min");
+               Console.WriteLine("Tempo estacionado:   " + FormatarTempo(tempoEstacionado));
                Console.WriteLine("Valor total R$:      " + Calculopreco(tempoEstacionado) );
                    Console.WriteLine("-----------------"); 
                   
@@ -101,10 +94,8 @@ namespace DesafioFundamentos.Models
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Desculpe, esse veículo não está estacionado aqui. Confira se digitou a placa corretamente");
                 Console.ResetColor();
-               
-            }
+               }
         }
-
         public void ListarVeiculos()
         {
             // Verifica se há veículos no estacionamento
@@ -128,23 +119,25 @@ namespace DesafioFundamentos.Models
         }
         //validação de placa usando expressões regulares
        public bool Validarplaca(string placa){
-          
+
           string padraoPlaca = "^[A-Z]{3}[A-Z-0-9]{4}$";
           bool validar = Regex.IsMatch(placa, padraoPlaca);
-         return validar;
+          return validar;
         }
-     
-     decimal Calculopreco(TimeSpan tempoEstacionado)
+      decimal Calculopreco(TimeSpan tempoEstacionado)
       {
-     if(tempoEstacionado.Minutes <= 10)
-     {
-    return TaxaEstacionamento;
+        if(tempoEstacionado.Minutes <= 10){
+        return TaxaEstacionamento;
      }
-    else
-     {
-      int precoHora = 5;
-      return Math.Round(TaxaEstacionamento + (tempoEstacionado.Minutes/60) * precoHora); 
+       else{
+       int precoHora = 5;
+       return Math.Round(TaxaEstacionamento + (tempoEstacionado.Minutes/60) * precoHora); 
       }
       }
+      private string FormatarTempo (TimeSpan tempoEstacionado)
+        {
+            return $"{tempoEstacionado.Hours:D2}:{tempoEstacionado.Minutes:D2}:{tempoEstacionado.Seconds:D2}";
+        }
+
    }
 }
