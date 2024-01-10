@@ -23,25 +23,21 @@ namespace DesafioFundamentos.Models
          public void AdicionarVeiculo()
         {
             //verifica se existe vaga para estacionar 
-           if(quantidadevagas == 0){
-             Console.ForegroundColor = ConsoleColor.Red;
-             Console.WriteLine("Não há mais vagas disponiveis no estacionamento.");
-             Console.ResetColor();
-           }
-           else
-         {
+           if(quantidadevagas > 0)
+           {
             Console.WriteLine("Digite a placa do veículo para estacionar:");
             string placa = Console.ReadLine().ToUpper();
-           
-            //verifica se a placa já existe no sistema
-            if(veiculos.Contains(placa)){ 
+          
+           //verifica se o carro já esta cadastrado
+           if(veiculos.Contains(placa)){ 
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Placa já esta cadastrada no sistema.");
                 Console.ResetColor();
                 AdicionarVeiculo();
             }
-           //chama a função para validar a placa e adiciona veiculo
-           else if(Validarplaca(placa))
+           
+            //validação da placa
+             else if(Validarplaca(placa))
            {
              veiculos.Add(placa);
              horaEntrada = DateTime.Now;
@@ -53,13 +49,22 @@ namespace DesafioFundamentos.Models
 
              Console.WriteLine($"Há {quantidadevagas} vagas disponiveis no estacionamento.");
             }
-            //placa fora do padrão
-            else{
+             //placa fora do padrão
+             else 
+             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Placa não corresponde ao padrão do mercosul.");
                 Console.ResetColor();
                 AdicionarVeiculo(); //tente novamente
-               }
+               } 
+          }
+          
+          //sem quantidade de vaga no estacionamento
+           else
+         {
+              Console.ForegroundColor = ConsoleColor.Red;
+             Console.WriteLine("Não há mais vagas disponiveis no estacionamento.");
+             Console.ResetColor();
             }
          }
           public void RemoverVeiculo()
@@ -89,6 +94,7 @@ namespace DesafioFundamentos.Models
              
              Console.WriteLine($"Há {quantidadevagas} vagas disponiveis no estacionamento.\n");
              }
+             // veículo não cadastrado
             else
             {
                 Console.ForegroundColor = ConsoleColor.Red;
@@ -118,8 +124,8 @@ namespace DesafioFundamentos.Models
             }
         }
         //validação de placa usando expressões regulares
-       public bool Validarplaca(string placa){
-
+       public bool Validarplaca(string placa)
+       {
           string padraoPlaca = "^[A-Z]{3}[A-Z-0-9]{4}$";
           bool validar = Regex.IsMatch(placa, padraoPlaca);
           return validar;
@@ -128,8 +134,9 @@ namespace DesafioFundamentos.Models
       {
         if(tempoEstacionado.Minutes <= 10){
         return TaxaEstacionamento;
-     }
-       else{
+      }
+       else
+       {
        int precoHora = 5;
        return Math.Round(TaxaEstacionamento + (tempoEstacionado.Minutes/60) * precoHora, 2); 
       }
