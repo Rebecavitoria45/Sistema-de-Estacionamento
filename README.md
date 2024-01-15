@@ -27,7 +27,13 @@ O desafio foi criar um sistema para a gestão de um estacionamento, Apartir de u
 ° Quantidade de vagas que estão disponíveis no momento, se ultrapassar o usuário não consegue mais cadastrar nenhum veículo.<br>
 ° Cálculo para o preço do estacionamento(10 min -> só paga a taxa do estacionamento, Tempo maior que 10 min -> paga 5 reais por hora).
 
+<b>Cadastrando carro <br>
+![Captura de tela 2024-01-15 204314](https://github.com/Rebecavitoria45/Desafio-dio-.NET/assets/117654851/ad38568e-ea64-49e2-8bd7-74e9622b6e03)
 
+<b>Listando carros <br>
+![Captura de tela 2024-01-15 204427](https://github.com/Rebecavitoria45/Desafio-dio-.NET/assets/117654851/8a6426a3-9a8e-4c6a-afb0-5f05cf71e320)
 
+<b>Removendo carro <br>
+![Captura de tela 2024-01-15 204602](https://github.com/Rebecavitoria45/Desafio-dio-.NET/assets/117654851/f12284a9-7905-4ea2-a053-77f9d0595307)
 
 
